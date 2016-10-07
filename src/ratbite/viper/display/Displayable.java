@@ -9,6 +9,8 @@ public interface Displayable {
 	public void removeChild(Displayable d);
 	public ArrayList<Displayable> getChildren();
 	
+	public void repeat();
+	
 	public Image getImage();
 	
 	public int getWidth();

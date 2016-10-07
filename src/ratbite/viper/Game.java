@@ -4,7 +4,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import javax.swing.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
 import ratbite.viper.display.GameWindow;
@@ -13,7 +12,7 @@ public class Game implements ActionListener{
 	
 	private static String gameName = "Viper Game";
 	
-	private static int fps = 60;
+	private static int fps = 240;
 	
 	private static ArrayList<GameWindow> windows = new ArrayList<GameWindow>();;
 	

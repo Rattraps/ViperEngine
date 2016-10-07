@@ -1,13 +1,7 @@
 package ratbite.viper.display;
 
 import java.awt.Image;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
-
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
 
 public class DisplayObject implements Displayable{
 	
@@ -17,11 +11,11 @@ public class DisplayObject implements Displayable{
 	private int width;
 	private int height;
 	
-	private ImageIcon image;
+	private Animation animation;
 	
 	private ArrayList<Displayable> children;
 	
-	public DisplayObject(int x, int y, int w, int h, String imagePath){
+	public DisplayObject(int x, int y, int w, int h, Animation anim){
 		children = new ArrayList<Displayable>();
 		
 		this.x = x;
@@ -30,13 +24,7 @@ public class DisplayObject implements Displayable{
 		height = h;
 		width = w;
 		
-		if(imagePath != null){
-			setImage(imagePath);
-		}
-		else{
-			System.out.println("Image not found - Resorting to Default.");
-			image = new ImageIcon();
-		}
+		setAnimation(anim);
 
 	}
 	
@@ -60,22 +48,22 @@ public class DisplayObject implements Displayable{
 	}
 
 	public ArrayList<Displayable> getChildren() {
-		return (ArrayList<Displayable>) children.clone();
+		return children;
 	}
 	
-	public void setImage(String imagePath){
-		try
-		{
-			image = new ImageIcon(imagePath);
-		}
-		catch(Exception e)
-		{
-			System.out.println("Image not found");
-		}
+	public void setAnimation(Animation anim){
+		animation = anim.clone();
+	}
+	
+	public Animation getAnimation(){
+		return animation;
 	}
 
 	public Image getImage() {
-		return image.getImage();
+		if(animation != null){
+			return animation.getImage();
+		}
+		return null;
 	}
 	
 	public void setWidth(int w){
@@ -108,6 +96,10 @@ public class DisplayObject implements Displayable{
 
 	public int getY() {
 		return y;
+	}
+
+	public void repeat() {
+		
 	}
 
 }

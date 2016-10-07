@@ -10,6 +10,8 @@ import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
@@ -66,7 +68,7 @@ public class GameWindow extends JFrame implements Displayable{
 	}
 
 	public ArrayList<Displayable> getChildren() {
-		return (ArrayList<Displayable>) children.clone();
+		return children;
 	}
 	
 	public Image getImage(){
@@ -79,7 +81,7 @@ public class GameWindow extends JFrame implements Displayable{
 	public void goFullScreen()
 	{
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		resize(0, 0, (int)screenSize.getWidth(), (int)screenSize.getHeight());
+		resize(0, 0, (int)screenSize.getHeight(), (int)screenSize.getWidth());
 		dispose();
 		setUndecorated(true);
 		setVisible(true);
@@ -93,16 +95,17 @@ public class GameWindow extends JFrame implements Displayable{
 	
 	public void setIcon(String s)
 	{
+		Path path = Paths.get(s);
+		
 		try
 		{
-			File f = new File(s);
-			System.out.println("Icon retrieved from: " + f.getCanonicalPath());
-			BufferedImage i = ImageIO.read(f);
+			System.out.println("Icon retrieved from: " + path.toAbsolutePath());
+			BufferedImage i = ImageIO.read(path.toFile());
 			setIconImage(i);
 		}
 		catch(IOException e)
 		{
-			System.out.println("Error: Desired Icon Image Doesn't Exist!");
+			System.err.println("Error: Desired Icon Image Doesn't Exist!");
 		}
 	}
 	
@@ -115,11 +118,18 @@ public class GameWindow extends JFrame implements Displayable{
 		Game.removeWindow(this);
 	}
 	
+	/*
+	 * Not suggested.
+	 */
+	public GamePanel getGamePanel(){
+		return panel;
+	}
+	
 	private class GamePanel extends JPanel{
 
 		public void paintComponent(Graphics g){
-			g.setColor(Color.BLACK);
-			g.fillRect(0, 0, this.getWidth(), this.getHeight());
+			g.setColor(Color.WHITE);
+			g.fillRect(this.getX(), this.getY(), this.getWidth(), this.getHeight());
 			for(Displayable d : children){
 				drawChild(g, d);
 			}
