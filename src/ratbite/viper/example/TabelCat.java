@@ -2,12 +2,15 @@ package ratbite.viper.example;
 
 import ratbite.viper.*;
 import ratbite.viper.display.Animation;
-import ratbite.viper.display.DisplayObject;
 import ratbite.viper.display.GameWindow;
 
 public class TabelCat {
 	public static void main(String... args){
-		GameWindow mainWindow = new GameWindow("Tabel Cat");
+		
+		// Game size = 1366 x 768, x2
+		
+		
+		GameWindow mainWindow = new GameWindow("Tabel Cat", 800, 800);
 		
 		mainWindow.setIcon("art/mowth.png");
 		
@@ -17,10 +20,13 @@ public class TabelCat {
 		Animation corgs = Animation.makeAnimationFromGIF("art/corgi.gif");
 		corgs.setDelay(6);
 		
-		for(int i = 0; i < 500; i++){
-			mainWindow.addChild(new DisplayObject((int)(i) * 5, (int)(Math.random() * 300), 300, 300, corgs));
-		}
+		Animation goodart = Animation.makeAnimationFromImage("art/GOODART.png");
+		Animation spicy = Animation.makeAnimationFromImage("art/spicy.png");
 		
+		ExampleSprite exm = new ExampleSprite(100, 100, 100, 100, goodart, mainWindow.getKeyListener());
+		
+		mainWindow.addChild(exm);
+	
 		
 		Game.start();
 		

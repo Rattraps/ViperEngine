@@ -8,7 +8,6 @@ import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -26,9 +25,13 @@ public class GameWindow extends JFrame implements Displayable{
 	private GamePanel panel;
 	
 	private ArrayList<Displayable> children;
+	private KeyboardListener keyListener;
 	
 	public GameWindow(String name, int width, int height){
 		children = new ArrayList<Displayable>();
+		keyListener = new KeyboardListener();
+		
+		addKeyListener(keyListener);
 		
 		setTitle(name);
 		setSize(width, height);
@@ -54,6 +57,10 @@ public class GameWindow extends JFrame implements Displayable{
 	
 	public void repeat(){
 		panel.repaint();
+	}
+	
+	public KeyboardListener getKeyListener(){
+		return keyListener;
 	}
 	
 
@@ -131,6 +138,7 @@ public class GameWindow extends JFrame implements Displayable{
 			g.setColor(Color.WHITE);
 			g.fillRect(this.getX(), this.getY(), this.getWidth(), this.getHeight());
 			for(Displayable d : children){
+				d.repeat();
 				drawChild(g, d);
 			}
 		}

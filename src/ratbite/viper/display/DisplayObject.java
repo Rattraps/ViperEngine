@@ -5,11 +5,11 @@ import java.util.ArrayList;
 
 public class DisplayObject implements Displayable{
 	
-	private int x;
-	private int y;
+	protected int x;
+	protected int y;
 	
-	private int width;
-	private int height;
+	protected int width;
+	protected int height;
 	
 	private Animation animation;
 	
@@ -35,6 +35,26 @@ public class DisplayObject implements Displayable{
 	public DisplayObject(){
 		this(0, 0, 0, 0, null);
 	}
+	
+	public boolean hitObject(DisplayObject obj){
+		if(obj.getX() <= getX() && obj.getWidth() + obj.getX() > getX()){
+			return hitObjectY(obj);
+		}
+		else if(getX() <= obj.getX() + obj.getWidth() && getX() + getWidth() > obj.getX()){
+			return hitObjectY(obj);
+		}
+		return false;
+	}
+	
+	private boolean hitObjectY(DisplayObject obj){
+		if(obj.getY() <= getY() && obj.getHeight() + obj.getY() > getY()){
+			return true;
+		}
+		else if(getY() <= obj.getY() + obj.getHeight() && getY() + getHeight() > obj.getY()){
+			return true;
+		}
+		return false;
+	}
 
 	public void addChild(Displayable d) {
 		if(!children.contains(d)){
@@ -52,7 +72,9 @@ public class DisplayObject implements Displayable{
 	}
 	
 	public void setAnimation(Animation anim){
-		animation = anim.clone();
+		if(anim != null){
+			animation = anim.clone();	
+		}
 	}
 	
 	public Animation getAnimation(){
