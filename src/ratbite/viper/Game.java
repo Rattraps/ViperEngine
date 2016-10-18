@@ -31,8 +31,8 @@ public class Game implements ActionListener{
 	public static void end(){
 		timer.stop();
 		
-		for(GameWindow window : windows){
-			window.close();
+		while(!windows.isEmpty()){
+			windows.get(0).close();
 		}
 		
 		windows.clear();

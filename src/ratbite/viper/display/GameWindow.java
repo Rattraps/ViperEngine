@@ -120,6 +120,7 @@ public class GameWindow extends JFrame implements Displayable{
 		System.out.println("Closing window: " + this.getTitle());
 		
 		removeWindowListener(closer);
+		removeKeyListener(keyListener);
 		dispose();
 		
 		Game.removeWindow(this);
