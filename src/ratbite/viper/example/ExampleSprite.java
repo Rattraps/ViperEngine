@@ -20,16 +20,16 @@ public class ExampleSprite extends DisplayObject {
 		if(keyListener != null)
 		{
 			if(keyListener.isHeld(KeyEvent.VK_A)){
-				x--;
+				setX(getX()-1);
 			}
 			if(keyListener.isHeld(KeyEvent.VK_S)){
-				y++;
+				setY(getY()+1);
 			}
 			if(keyListener.isHeld(KeyEvent.VK_D)){
-				x++;
+				setX(getX()+1);
 			}
 			if(keyListener.isHeld(KeyEvent.VK_W)){
-				y--;
+				setY(getY()-1);
 			}
 		}
 	}

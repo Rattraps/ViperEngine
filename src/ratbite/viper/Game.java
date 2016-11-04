@@ -68,13 +68,14 @@ public class Game implements ActionListener{
 			end();
 		}
 		
-		//Track FPS in statistics
-		GameStatistics.FPS = (int) (TimeUnit.SECONDS.toMillis(1)/(System.currentTimeMillis() - currentTime));
-		if(GameStatistics.FPS > fps)
-			GameStatistics.FPS = fps;
-		
-		
-		System.out.println(GameStatistics.FPS);
+		if(GameStatistics.printFPS){
+			//Track FPS in statistics
+			GameStatistics.FPS = (int) (TimeUnit.SECONDS.toMillis(1)/(System.currentTimeMillis() - currentTime));
+			if(GameStatistics.FPS > fps)
+				GameStatistics.FPS = fps;	
+			
+			System.out.println(GameStatistics.FPS);
+		}
 		
 		
 		currentTime = System.currentTimeMillis();

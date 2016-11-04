@@ -5,11 +5,14 @@ import java.util.ArrayList;
 
 public class DisplayObject implements Displayable{
 	
-	protected int x;
-	protected int y;
+	private int x;
+	private int y;
 	
-	protected int width;
-	protected int height;
+	private int offsetX;
+	private int offsetY;
+	
+	private int width;
+	private int height;
 	
 	private Animation animation;
 	
@@ -20,6 +23,9 @@ public class DisplayObject implements Displayable{
 		
 		this.x = x;
 		this.y = y;
+		
+		offsetX = 0;
+		offsetY = 0;
 		
 		height = h;
 		width = w;
@@ -37,20 +43,32 @@ public class DisplayObject implements Displayable{
 	}
 	
 	public boolean hitObject(DisplayObject obj){
-		if(obj.getX() <= getX() && obj.getWidth() + obj.getX() > getX()){
+		int objW = Math.abs(obj.getWidth());
+		int thisW = Math.abs(getWidth());
+		
+		int objX = obj.getOffsetX() + obj.getX() - objW/2;
+		int thisX = getOffsetX() + getX() - thisW/2;
+		
+		if(objX <= thisX && objW + objX > thisX){
 			return hitObjectY(obj);
 		}
-		else if(getX() <= obj.getX() + obj.getWidth() && getX() + getWidth() > obj.getX()){
+		else if(thisX <= objX + objW && thisX + thisW > objX){
 			return hitObjectY(obj);
 		}
 		return false;
 	}
 	
 	private boolean hitObjectY(DisplayObject obj){
-		if(obj.getY() <= getY() && obj.getHeight() + obj.getY() > getY()){
+		int objH = Math.abs(obj.getHeight());
+		int thisH = Math.abs(getHeight());
+		
+		int objY = obj.getOffsetY() + obj.getY() - objH/2;
+		int thisY = getOffsetY() + getY() - thisH/2;
+		
+		if(objY <= thisY && objH + objY > thisY){
 			return true;
 		}
-		else if(getY() <= obj.getY() + obj.getHeight() && getY() + getHeight() > obj.getY()){
+		else if(thisY <= objY + objH && thisY + thisH > objY){
 			return true;
 		}
 		return false;
@@ -58,6 +76,8 @@ public class DisplayObject implements Displayable{
 
 	public void addChild(Displayable d) {
 		if(!children.contains(d)){
+			setChildOffset(d);
+			
 			children.add(d);			
 		}
 	}
@@ -106,6 +126,34 @@ public class DisplayObject implements Displayable{
 	
 	public void setX(int x) {
 		this.x = x;
+		
+		for(Displayable child : children){
+			setChildOffset(child);
+		}
+	}
+	
+	public int getOffsetX(){
+		return offsetX;
+	}
+	
+	protected void setOffsetX(int x){
+		offsetX = x;
+		
+		for(Displayable child : children){
+			setChildOffset(child);
+		}
+	}
+	
+	public int getOffsetY(){
+		return offsetY;
+	}
+	
+	protected void setOffsetY(int y){
+		offsetY = y;
+		
+		for(Displayable child : children){
+			setChildOffset(child);
+		}
 	}
 
 	public int getX() {
@@ -114,7 +162,12 @@ public class DisplayObject implements Displayable{
 	
 	public void setY(int y) {
 		this.y = y;
+		
+		for(Displayable child : children){
+			setChildOffset(child);
+		}
 	}
+	
 
 	public int getY() {
 		return y;
@@ -122,6 +175,14 @@ public class DisplayObject implements Displayable{
 
 	public void repeat() {
 		
+	}
+	
+	private void setChildOffset(Displayable d){
+		if(d instanceof DisplayObject){
+			DisplayObject dis = (DisplayObject)d;
+			dis.setOffsetX(getOffsetX() + getX());
+			dis.setOffsetY(getOffsetY() + getY());
+		}
 	}
 
 }

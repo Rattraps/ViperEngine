@@ -17,4 +17,7 @@ public interface Displayable {
 	public int getHeight();
 	public int getX();
 	public int getY();
+	
+	public int getOffsetX();
+	public int getOffsetY();
 }

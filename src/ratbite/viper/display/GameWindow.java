@@ -28,6 +28,7 @@ public class GameWindow extends JFrame implements Displayable{
 	private KeyboardListener keyListener;
 	
 	public GameWindow(String name, int width, int height){
+		
 		children = new ArrayList<Displayable>();
 		keyListener = new KeyboardListener();
 		
@@ -40,9 +41,11 @@ public class GameWindow extends JFrame implements Displayable{
 		
 		closer = new GameWindowCloser();
 		panel = new GamePanel();
+		panel.setOpaque(false);
 		
 		
 		getContentPane().add(panel);
+		getContentPane().setBackground(Color.BLACK);
 		
 		addWindowListener(closer);
 	}
@@ -82,6 +85,14 @@ public class GameWindow extends JFrame implements Displayable{
 		return panel.createImage(this.getWidth(), this.getHeight());
 	}
 	
+	public int getOffsetX() {
+		return 0;
+	}
+
+	public int getOffsetY() {
+		return 0;
+	}
+	
 	/**
 	 * Warning: Won't support dual monitors
 	 */
@@ -89,14 +100,12 @@ public class GameWindow extends JFrame implements Displayable{
 	{
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		resize(0, 0, (int)screenSize.getHeight(), (int)screenSize.getWidth());
-		dispose();
 		setUndecorated(true);
-		setVisible(true);
-
 	}
 	
 	public void resize(int X, int Y, int H, int W)
 	{
+		System.out.println("New Window Bounds: " + W + "x" + H);
 		setBounds(X, Y, W, H);
 	}
 	
@@ -136,16 +145,33 @@ public class GameWindow extends JFrame implements Displayable{
 	private class GamePanel extends JPanel{
 
 		public void paintComponent(Graphics g){
-			g.setColor(Color.WHITE);
-			g.fillRect(this.getX(), this.getY(), this.getWidth(), this.getHeight());
 			for(Displayable d : children){
 				d.repeat();
 				drawChild(g, d);
+				recurseChildren(d, g);
+			}
+		}
+		
+		private void recurseChildren(Displayable parent, Graphics g){
+			
+			ArrayList<Displayable> kids = parent.getChildren();
+			
+			for(Displayable d : kids){
+				d.repeat();
+				drawChild(g, d);
+				recurseChildren(d, g);
 			}
 		}
 		
 		private void drawChild(Graphics g, Displayable d){
-			g.drawImage(d.getImage(), d.getX(), d.getY(), d.getWidth(), d.getHeight(), null); 
+			int x = d.getX() - d.getWidth()/2;
+			int y = d.getY() - d.getHeight()/2;
+			
+			x += d.getOffsetX();
+			y += d.getOffsetY();
+
+			
+			g.drawImage(d.getImage(), x, y, d.getWidth(), d.getHeight(), null); 
         }
 		
 	}
@@ -156,4 +182,5 @@ public class GameWindow extends JFrame implements Displayable{
 	    	((GameWindow)windowEvent.getSource()).close();
 	    }
 	}
+
 }

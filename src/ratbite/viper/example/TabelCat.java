@@ -7,9 +7,6 @@ import ratbite.viper.display.GameWindow;
 public class TabelCat {
 	public static void main(String... args){
 		
-		// Game size = 1366 x 768, x2
-		
-		
 		GameWindow mainWindow = new GameWindow("Tabel Cat", 800, 800);
 		
 		mainWindow.setIcon("art/mowth.png");
