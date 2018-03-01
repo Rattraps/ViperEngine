@@ -18,8 +18,12 @@ public class DisplayObject implements Displayable{
 	
 	private ArrayList<Displayable> children;
 	
+	private ArrayList<Displayable> deadChildren;
+	private boolean resize;
+	
 	public DisplayObject(int x, int y, int w, int h, Animation anim){
 		children = new ArrayList<Displayable>();
+		deadChildren = new ArrayList<Displayable>();
 		
 		this.x = x;
 		this.y = y;
@@ -29,6 +33,8 @@ public class DisplayObject implements Displayable{
 		
 		height = h;
 		width = w;
+		
+		resize = true;
 		
 		setAnimation(anim);
 
@@ -83,7 +89,7 @@ public class DisplayObject implements Displayable{
 	}
 
 	public void removeChild(Displayable d) {
-		children.remove(d);
+		deadChildren.add(d);
 		
 	}
 
@@ -172,8 +178,23 @@ public class DisplayObject implements Displayable{
 	public int getY() {
 		return y;
 	}
+	
+	public void resizable(boolean r){
+		resize = r;
+	}
+	
+	public boolean isResizable(){
+		return resize;
+	}
+	
+	
 
 	public void repeat() {
+		for(Displayable d: deadChildren){
+			children.remove(d);
+		}
+		
+		deadChildren.clear();
 		
 	}
 	
@@ -183,6 +204,22 @@ public class DisplayObject implements Displayable{
 			dis.setOffsetX(getOffsetX() + getX());
 			dis.setOffsetY(getOffsetY() + getY());
 		}
+	}
+	
+	public Displayable clone(){
+		
+		if(animation != null){
+			animation.repeat();
+		}
+		
+		Displayable clone = new DisplayObject(getX(), getY(), getWidth(), getHeight(), getAnimation() == null ? null : getAnimation().clone());
+		((DisplayObject)clone).resize = resize;
+		
+		for(Displayable child : children){
+			clone.addChild(child.clone());
+		}
+		
+		return clone;
 	}
 
 }

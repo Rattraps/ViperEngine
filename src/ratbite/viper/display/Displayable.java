@@ -3,7 +3,7 @@ package ratbite.viper.display;
 import java.awt.Image;
 import java.util.ArrayList;
 
-public interface Displayable {
+public interface Displayable extends Cloneable{
 	
 	public void addChild(Displayable d);
 	public void removeChild(Displayable d);
@@ -20,4 +20,6 @@ public interface Displayable {
 	
 	public int getOffsetX();
 	public int getOffsetY();
+	
+	public Displayable clone();
 }

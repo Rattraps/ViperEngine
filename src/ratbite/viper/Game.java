@@ -6,30 +6,18 @@ import java.util.ArrayList;
 import javax.swing.Timer;
 import java.util.concurrent.TimeUnit;
 
+import ratbite.viper.display.Animation;
 import ratbite.viper.display.GameWindow;
 
-public class Game implements ActionListener{
+public class Game{
 	
 	private static String gameName = "Viper Game";
 	
 	private static int fps = 240;
 	
-	private static ArrayList<GameWindow> windows = new ArrayList<GameWindow>();;
-	
-	
-	private static Timer timer;
-	
-	private long currentTime;
-	
-	
-	public static void start(){
-		timer = new Timer((int) TimeUnit.SECONDS.toMillis(1)/fps, new Game());
-		
-		timer.start();
-	}
+	private static ArrayList<GameWindow> windows = new ArrayList<GameWindow>();
 	
 	public static void end(){
-		timer.stop();
 		
 		while(!windows.isEmpty()){
 			windows.get(0).close();
@@ -38,6 +26,10 @@ public class Game implements ActionListener{
 		windows.clear();
 		
 		System.exit(0);
+	}
+	
+	public static int getFPS(){
+		return fps;
 	}
 	
 	public static void setFPS(int f){
@@ -49,10 +41,16 @@ public class Game implements ActionListener{
 	public static void addWindow(GameWindow window){
 		window.setVisible(true);
 		windows.add(window);
+		
+		window.repeat();
 	}
 	
 	public static void removeWindow(GameWindow window){
 		windows.remove(window);
+		
+		if(windows.size() == 0){
+			end();
+		}
 	}
 	
 	public static void setName(String name){
@@ -61,28 +59,5 @@ public class Game implements ActionListener{
 	
 	public static String getName(){
 		return gameName;
-	}
-
-	public void actionPerformed(ActionEvent timerEvent) {
-		if(windows.size() == 0){
-			end();
-		}
-		
-		if(GameStatistics.printFPS){
-			//Track FPS in statistics
-			GameStatistics.FPS = (int) (TimeUnit.SECONDS.toMillis(1)/(System.currentTimeMillis() - currentTime));
-			if(GameStatistics.FPS > fps)
-				GameStatistics.FPS = fps;	
-			
-			System.out.println(GameStatistics.FPS);
-		}
-		
-		
-		currentTime = System.currentTimeMillis();
-		
-		for(GameWindow window : windows){
-			window.repeat();
-		}
-		
 	}
 }
