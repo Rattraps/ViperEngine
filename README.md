@@ -2,13 +2,12 @@
 2D Game Engine library for personal use
 
 TO-DO:
-  1. I/O
-  2. Text
-  3. Collision Detection (Box then Precise)
-  4. Saving
-  5. Rotation
-  6. Sound
-  7. Lighting and masking
+  1. Precise Collision Detection
+  2. Saving
+  3. Rotation
+  4. Sound
+  5. Lighting and masking
 
 Bugs:
-  1. Ocassional concurrency exception on startup
+  1. Occasional concurrency exception on startup
+  
